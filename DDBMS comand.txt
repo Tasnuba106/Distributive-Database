@@ -1,0 +1,14 @@
+creatind database:    
+create database learn;                                                                           
+enter in the database: \c learn                                                                                                       show database: \l                                                                                                                         delete database: \c postgres                                                                                            drop database learn;                                                                                                                  disconnect:\q
+Create Table: create table student(id int primary key not null, name text not null, email text not null, age int not null)
+Show table: \d
+Show table info: \d tablename
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.create database NAME;   
+2.\c DATABASE_NAME; [goto that Database]
+3.create table NAME(id INT,name VARCHAR(40),intake INT);
+4.insert into TABLE_NAME(id,name,intake)VALUES(123,"sadman",43);
+5.\copy TABLE_NAME from 'PATH' with delimiter ',' csv header;
+6.select * from TABLE_NAME;
+7.\dt [for showing all table]
