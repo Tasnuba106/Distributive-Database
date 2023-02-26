@@ -1,0 +1,109 @@
+creatind database:    
+create database learn;                                                                           
+enter in the database: \c learn                                                                                                       show database: \l                                                                                                                         delete database: \c postgres                                                                                            drop database learn;                                                                                                                  disconnect:\q
+Create Table: create table student(id int primary key not null, name text not null, email text not null, age int not null)
+Show table: \d
+Show table info: \d tablename
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.create database NAME;   
+2.\c DATABASE_NAME; [goto that Database]
+3.create table NAME(id INT,name VARCHAR(40),intake INT);
+4.insert into TABLE_NAME(id,name,intake)VALUES(123,"sadman",43);
+5.\copy TABLE_NAME from 'PATH' with delimiter ',' csv header;
+6.select * from TABLE_NAME;
+7.\dt [for showing all table]
+_________________________________________________________________________________________
+name,id,email,age
+Tasnuba,106,niru@gmail.com,21
+Shanu,119,shanu@gmail.com,22
+_______________________________________________________________________________
+import psycopg2
+connection=psycopg2.connect(user="postgres",password="sad@2600",port="5432",database="bubtlab")
+connection.autocommit=True
+cursor=connection.cursor()
+sql = '''copy omg from 'E:\DDB\data.csv' delimiter ',' csv header;'''
+cursor.execute(sql)
+connection.commit()
+cursor.close()
+____________________________________________________________________________________________________________
+List partition                                                                                                                                                                                                                                   create table student(
+    id int,
+    name text,
+    intake int,
+    dept text
+)partition by list(dept);
+create table dept1 partition of student
+    for values in ('cse');
+create table dept2 partition of student
+    for values in ('eee');
+create table dept3 partition of student
+    for values in ('bba');
+____________________________________________________________________________
+Range partitoning                                                                                                                                                                                                                        create table person(
+    age int,
+    name text,
+    city text,
+    status text
+)partition by range(age);
+create table Kid_table partition of person
+    for values from (0) to (17);
+create table Adult_table partition of person
+    for values from (18) to (100);
+________________________________________________________________________________________________________
+CRUD                                                                                                                                                                                                                                           import psycopg2
+connection=psycopg2.connect(database='bubtlab',password='sad@2600',user='postgres')
+cursor=connection.cursor()
+#Create
+def create():
+    x=input('Enter Name: ')
+    y=input('Enter Age: ')
+    cursor.execute("INSERT INTO person(name,age) VALUES(%s,%s)",(x,y))
+    connection.commit()
+    connection.close()
+#Read
+def read():
+    cursor.execute('SELECT count(*) FROM person;')
+    for i in cursor:
+        print(i[0],' Data Available')
+    cursor.execute("SELECT * FROM person;")
+    for i in cursor:
+        print('=======================')
+        print('Name: ',i[1])
+        print('Age: ',i[2])
+        print('=======================')
+    connection.close()
+#Update
+def update():
+    x=input('UPDATE : ')
+    xx=input('Which Data you want to Update : ')
+    if(xx=='1'):
+        xx1=input('Enter New Name: ')
+        cursor.execute("UPDATE person SET name=%s WHERE name=%s",(xx1,x,))
+        connection.commit()
+        if(connection):
+            print('Updated Name')
+        connection.close()
+    elif(xx=='2'):
+        xx1=input('Enter New Age: ')
+        cursor.execute("UPDATE person SET age=%s WHERE name=%s",(xx1,x,))
+        connection.commit()
+        if(connection):
+            print('Updated Name')
+        connection.close()
+#Delete
+def delete():
+    x=input('DELETE : ')
+    cursor.execute("DELETE FROM person WHERE name=%s",(x,))
+    connection.commit()
+    if(connection):
+        print('Deleted Data')
+    connection.close()
+x=input("Enter your choice: ")
+if x=='1':
+    create()
+elif x=='2':
+    read()
+elif x=='3':
+    update()
+elif x=='4':
+    delete()
